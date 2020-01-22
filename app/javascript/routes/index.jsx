@@ -1,11 +1,16 @@
 import React from "react"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
 import Home from "../components/home"
+import Login from "../components/login"
+import Signup from "../components/signup"
 
 export default (
-  <Router>
+  <BrowserRouter>
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/signup" component={Signup} />
+      <Route exact path="/movies" component={Movies} />
     </Switch>
-  </Router>
+  </BrowserRouter>
 )

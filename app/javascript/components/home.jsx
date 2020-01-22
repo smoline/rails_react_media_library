@@ -1,20 +1,27 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { Container, Button, Header } from "semantic-ui-react"
+import { Container, Button, Header, Divider } from "semantic-ui-react"
 
-export default () => (
-  <Container>
-    <Header as='h1'>
-      Login for My Media Library V2
-    </Header>
-    <p>
-      This will be the login page.
-    </p>
-    <hr />
-    <div>
-      <Button as={Link} to="/movies" className="custom-button">
-        View Movies
-      </Button>
-    </div>
-  </Container>
-)
+const Home = () => {
+  return (
+    <Container>
+      <Header as="h1">
+        My Media Library
+      </Header>
+      <Divider />
+      <div>
+        <Button as={Link} to="/login" inverted className="custom-button">
+          Log In
+        </Button>
+      </div>
+      <br></br>
+      <div>
+        <Button as={Link} to="/signup" inverted className="custom-button">
+          Sign Up
+        </Button>
+      </div>
+    </Container>
+  )
+}
+
+export default Home
