@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Routes from "../routes/index"
-// import axios from 'axios'
 
 // export default props => <>{Routes}</>
 
