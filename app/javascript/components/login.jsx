@@ -6,7 +6,8 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       errors: ''
@@ -22,20 +23,75 @@ class Login extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+    const { firstName, lastName, email, password } = this.state
+    let user = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password
+    }
+
+    const token = document.getElementsByName('csrf-token')[0].content
+
+    fetch('http://localhost:3000/login', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': token
+      },
+      body: JSON.stringify(user)
+    }).then(response => {
+        return response.json()
+    }).then(data => {
+      if (data.logged_in) {
+        this.props.handleLogin(data)
+        this.redirect()
+      } else {
+        this.setState({
+          errors: data.errors
+        })
+      }
+    })
+    .catch(error => console.log('api errors:', error))
+  }
+
+  redirect = () => {
+    this.props.history.push('/')
+  }
+
+  handleErrors = () => {
+    return (
+      <div>
+        <ul>
+          {this.state.errors.map(error => {
+            return <li key={error}>{error}</li>
+          })}
+        </ul>
+      </div>
+    )
   }
 
   render() {
-    const { username, email, password } = this.state
+    const { firstName, lastName, email, password } = this.state
     return (
       <Container>
         <Header as="h1">Log In</Header>
         <Divider />
         <Form inverted onSubmit={this.handleSubmit}>
           <Form.Input
-            label="User Name"
-            placeholder="username"
-            name="username"
-            value={username}
+            label="First Name"
+            placeholder="First Name"
+            name="firstName"
+            value={firstName}
+            onChange={this.handleChange}
+          />
+          <Form.Input
+            label="Last Name"
+            placeholder="Last Name"
+            name="lastName"
+            value={lastName}
             onChange={this.handleChange}
           />
           <Form.Input
