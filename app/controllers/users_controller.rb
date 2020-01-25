@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  wrap_parameters :user, include: [:first_name, :last_name, :email, :password, :password_confirmation]
+
   def index
     @users = User.all
     if @users
@@ -29,6 +31,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    puts user_params
     if @user.save
       login!
       render json: {
@@ -46,6 +49,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 end
