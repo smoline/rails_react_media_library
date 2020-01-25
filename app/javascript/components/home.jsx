@@ -8,7 +8,7 @@ const Home = () => {
       <Header as="h1">
         My Media Library
       </Header>
-      <Divider />
+      <Divider className="custom-divider" />
       <div>
         <Button as={Link} to="/login" inverted className="custom-button">
           Log In
