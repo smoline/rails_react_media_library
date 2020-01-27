@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Container, Button, Header, Divider, Form } from "semantic-ui-react"
+import { Grid, Button, Header, Divider, Form } from "semantic-ui-react"
 
 class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      firstName: '',
-      lastName: '',
       email: '',
       password: '',
       errors: ''
@@ -23,17 +21,17 @@ class Login extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    const { firstName, lastName, email, password } = this.state
+
+    const { email, password } = this.state
     let user = {
-      first_name: firstName,
-      last_name: lastName,
       email: email,
       password: password
     }
 
     const token = document.getElementsByName('csrf-token')[0].content
 
-    fetch('http://localhost:3000/login', {
+    console.log(user)
+    fetch('/login', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -45,6 +43,7 @@ class Login extends Component {
     }).then(response => {
         return response.json()
     }).then(data => {
+      console.log(data)
       if (data.logged_in) {
         this.props.handleLogin(data)
         this.redirect()
@@ -58,7 +57,7 @@ class Login extends Component {
   }
 
   redirect = () => {
-    this.props.history.push('/')
+    this.props.history.push('/movies')
   }
 
   handleErrors = () => {
@@ -74,48 +73,36 @@ class Login extends Component {
   }
 
   render() {
-    const { firstName, lastName, email, password } = this.state
+    const { email, password } = this.state
     return (
-      <Container>
-        <Header as="h1">Log In</Header>
-        <Divider />
-        <Form inverted onSubmit={this.handleSubmit}>
-          <Form.Input
-            label="First Name"
-            placeholder="First Name"
-            name="firstName"
-            value={firstName}
-            onChange={this.handleChange}
-          />
-          <Form.Input
-            label="Last Name"
-            placeholder="Last Name"
-            name="lastName"
-            value={lastName}
-            onChange={this.handleChange}
-          />
-          <Form.Input
-            label="Email"
-            placeholder="email"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-          <Form.Input
-            label="Password"
-            placeholder="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <Button placeholder="submit" type="submit">
-            Log In
-          </Button>
-          <p>
-            or <Link to='/signup'>sign up</Link>
-          </p>
-        </Form>
-      </Container>
+      <Grid centered style={{ height: '100vh' }} verticalAlign="middle">
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h1">Log In</Header>
+          <Divider />
+          <Form inverted onSubmit={this.handleSubmit}>
+            <Form.Input
+              label="Email"
+              placeholder="email"
+              name="email"
+              value={email}
+              onChange={this.handleChange}
+            />
+            <Form.Input
+              label="Password"
+              placeholder="password"
+              name="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+            <Button placeholder="submit" type="submit">
+              Log In
+            </Button>
+            <p>
+              or <Link to='/signup'>sign up</Link>
+            </p>
+          </Form>
+        </Grid.Column>
+      </Grid>
     )
   }
 }
