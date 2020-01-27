@@ -1,15 +1,19 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
 import { Grid, Button, Header, Divider, Form } from "semantic-ui-react"
 
 class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      email: '',
-      password: '',
-      errors: ''
+      email: "",
+      password: "",
+      errors: ""
     }
+  }
+
+  componentDidMount() {
+    return this.props.loggedInStatus ? this.redirect() : null
   }
 
   handleChange = (event) => {
@@ -28,22 +32,20 @@ class Login extends Component {
       password: password
     }
 
-    const token = document.getElementsByName('csrf-token')[0].content
+    const token = document.getElementsByName("csrf-token")[0].content
 
-    console.log(user)
-    fetch('/login', {
-      method: 'post',
+    fetch("/login", {
+      method: "post",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-Token': token
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": token
       },
       body: JSON.stringify(user)
     }).then(response => {
         return response.json()
     }).then(data => {
-      console.log(data)
       if (data.logged_in) {
         this.props.handleLogin(data)
         this.redirect()
@@ -53,11 +55,11 @@ class Login extends Component {
         })
       }
     })
-    .catch(error => console.log('api errors:', error))
+    .catch(error => console.log("api errors:", error))
   }
 
   redirect = () => {
-    this.props.history.push('/movies')
+    this.props.history.push("/")
   }
 
   handleErrors = () => {
@@ -75,7 +77,7 @@ class Login extends Component {
   render() {
     const { email, password } = this.state
     return (
-      <Grid centered style={{ height: '100vh' }} verticalAlign="middle">
+      <Grid centered style={{ height: "100vh" }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h1">Log In</Header>
           <Divider />
@@ -94,11 +96,11 @@ class Login extends Component {
               value={password}
               onChange={this.handleChange}
             />
-            <Button placeholder="submit" type="submit">
+            <Button inverted placeholder="submit" type="submit">
               Log In
             </Button>
             <p>
-              or <Link to='/signup'>sign up</Link>
+              or <Link to="/signup">sign up</Link>
             </p>
           </Form>
         </Grid.Column>

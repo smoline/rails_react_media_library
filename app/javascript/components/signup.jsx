@@ -1,16 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import { Link } from 'react-router-dom'
 import { Grid, Button, Header, Divider, Form } from "semantic-ui-react"
 
 class Signup extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
-      errors: ''
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      errors: ""
     }
   }
 
@@ -33,23 +34,21 @@ class Signup extends Component {
       password_confirmation: password_confirmation
     }
 
-    const token = document.getElementsByName('csrf-token')[0].content
+    const token = document.getElementsByName("csrf-token")[0].content
 
-    console.log(user)
-    fetch('http://localhost:3000/users', {
-      method: 'post',
+    fetch("/users", {
+      method: "post",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-Token': token
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": token
       },
       body: JSON.stringify(user)
     }).then(response => {
       return response.json()
     }).then(data => {
-      console.log(data)
-      if (data.status === 'created') {
+      if (data.status === "created") {
         this.props.handleLogin(data)
         this.redirect()
       } else {
@@ -58,11 +57,11 @@ class Signup extends Component {
         })
       }
     })
-    .catch(error => console.log('api errors:', error))
+    .catch(error => console.log("api errors:", error))
   }
 
   redirect = () => {
-    this.props.history.push('/')
+    this.props.history.push("/")
   }
 
   handleErrors = () => {
@@ -79,10 +78,10 @@ class Signup extends Component {
   render() {
     const { firstName, lastName, email, password, password_confirmation } = this.state
     return (
-      <Grid centered style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid centered style={{ height: "100vh" }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header textAlign='center' as="h1">Sign Up</Header>
-          <Divider className='custom-divider' />
+          <Header textAlign="center" as="h1">Sign Up</Header>
+          <Divider className="custom-divider" />
           <Form inverted onSubmit={this.handleSubmit}>
             <Form.Input
               label="First Name"
@@ -123,7 +122,9 @@ class Signup extends Component {
             <Button placeholder="submit" type="submit">
               Sign Up
             </Button>
-
+            <p>
+              or <Link to='/login'>Login</Link>
+            </p>
           </Form>
         </Grid.Column>
       </Grid>
