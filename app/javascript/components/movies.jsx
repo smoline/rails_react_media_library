@@ -1,5 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { Container, Header, Divider } from "semantic-ui-react"
+import "./movies.scss"
 
 class Movies extends React.Component {
   constructor(props) {
@@ -24,20 +26,24 @@ class Movies extends React.Component {
 
   render() {
     const { movies } = this.state
-    const allMovies = movies.map((movie, index) => (
+    const allMovies = movies.map(({ id, title, movie_image_url, release_date, runtime}, index) => (
       <div key={index} className="col-md-6 col-lg-4">
-        <div className="card mb-4">
-          <img
-            src={movie.movie_image_url}
-            className="card-img-top"
-            alt={`${movie.name} image`}
-          />
-          <div className="card-body">
-            <h5 className="card-title">{movie.name}</h5>
-            <Link to={`/movie/${movie.id}`} className="btn custom-button">
-              View Movie
-            </Link>
-          </div>
+        <div key={id} className="media-container">
+          <Link to={`/movies/${id}`}>
+            <div className="image-box"><img src={movie_image_url} /></div>
+            <div className="text-container">
+              <div className="media-title">
+                <p>{title}</p>
+              </div>
+              <div className="media-row3">
+                Rating
+              </div>
+              <div className="media-row2">
+                <p>{release_date}</p>
+                <p>{runtime} mins</p>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     ))
@@ -50,17 +56,14 @@ class Movies extends React.Component {
     )
 
     return (
-      <>
-        <section className="jumbotron jumbotron-fluid text-center">
-          <div className="container py-5">
-            <h1 className="display-4">Movies for every occasion</h1>
-            <p className="lead text-muted">
-              We’ve pulled together our most popular movies, our latest
-              additions, and our editor’s picks, so there’s sure to be something
-              tempting for you to try.
-            </p>
-          </div>
-        </section>
+      <Container>
+        <Header as='h1' className='movie-header'>Movies for every occasion</Header>
+        <p className="lead text-muted">
+          We’ve pulled together our most popular movies, our latest
+          additions, and our editor’s picks, so there’s sure to be something
+          tempting for you to try.
+        </p>
+        <Divider className='custom-divider' />
         <div className="py-5">
           <main className="container">
             <div className="text-right mb-3">
@@ -68,7 +71,7 @@ class Movies extends React.Component {
                 Create New Movie
               </Link>
             </div>
-            <div className="row">
+            <div className="main-container">
               {movies.length > 0 ? allMovies : noMovie}
             </div>
             <Link to="/" className="btn btn-link">
@@ -76,7 +79,7 @@ class Movies extends React.Component {
             </Link>
           </main>
         </div>
-      </>
+      </Container>
     )
   }
 }
