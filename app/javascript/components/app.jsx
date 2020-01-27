@@ -3,13 +3,17 @@ import React, { Component } from "react"
 
 import Navigation from "../components/navigation"
 
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import Home from "../components/home"
 import Login from "../components/login"
 import Signup from "../components/signup"
 import Movies from "../components/movies"
 
 // export default props => <>{Routes}</>
+
+const ProtectedRoute = ({ loggedInStatus, ...props }) => {
+  return loggedInStatus ? <Route {...props} /> : <Redirect to="/login" />
+}
 
 class App extends Component {
   constructor(props) {
@@ -25,18 +29,17 @@ class App extends Component {
   }
 
   loginStatus = () => {
-    fetch('http://localhost:3000/logged_in')
+    fetch("http://localhost:3000/logged_in")
     .then(response => {
       return response.json()
     }).then(data => {
-      console.log('logged_in: ', data)
       if (data.logged_in) {
         this.handleLogin(data)
       } else {
         this.handleLogout()
       }
     })
-    .catch(error => console.log('api errors:', error))
+    .catch(error => console.log("api errors: ", error))
   }
 
   handleLogin = (data) => {
@@ -58,15 +61,18 @@ class App extends Component {
       <div>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" render={props => (<Home {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
+            <Route exact path="/" render={props => (<Home {...props} handleLogout={this.handleLogout} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
             <Route exact path="/login" render={props => (<Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
             <Route exact path="/signup" render={props => (<Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
-            <Route exact path="/movies">
+            <ProtectedRoute
+              loggedInStatus={this.state.isLoggedIn}
+              exact
+              path="/movies">
               <div>
-                <Navigation />
+                <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} />
                 <Movies />
               </div>
-            </Route>
+            </ProtectedRoute>
           </Switch>
         </BrowserRouter>
       </div>
