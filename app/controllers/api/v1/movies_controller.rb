@@ -1,7 +1,12 @@
 class Api::V1::MoviesController < ApplicationController
   def index
-    movie = Movie.all.order(created_at: :desc)
-    render json: movie
+    movies = current_user.movies.order('title')
+    movies_owners = []
+    movies.each do |movie|
+      owner = movie.owners.find_by(user_id: current_user.id).as_json
+      movies_owners << movie.as_json.merge!(owner: owner)
+    end
+    render json: movies_owners
   end
 
   def create
@@ -14,6 +19,7 @@ class Api::V1::MoviesController < ApplicationController
   end
 
   def show
+    movie = Movie.find(params[:id])
     if movie
       render json: movie
     else
@@ -32,7 +38,8 @@ class Api::V1::MoviesController < ApplicationController
   private
 
   def movie_params
-    params.permit(:title, :description, :tmdb_id, :imdb_id, :release_date, :runtime, :tagline, :movie_image_url)
+    # params.permit(:title, :description, :tmdb_id, :imdb_id, :release_date, :runtime, :tagline, :movie_image_url)
+    params.require(:movie).permit(:title, :tmdb_id, :description, :release_date, :runtime, :tagline, :movie_image_url, owners_attributes: [:id, :user_id, :upc, :notes, :rating, :ownable_type, :ownable_id])
   end
 
   def movie
