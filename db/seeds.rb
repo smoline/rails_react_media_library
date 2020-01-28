@@ -564,3 +564,21 @@ Owner.create!({
   ownable_type: "Movie",
   ownable_id: 27
 })
+
+Owner.create!({
+  user_id: 2,
+  notes: "Excellent Movie",
+  upc: nil,
+  rating: 3,
+  ownable_type: "Movie",
+  ownable_id: 1
+})
+
+Owner.create!({
+  user_id: 2,
+  notes: "",
+  upc: nil,
+  rating: 3,
+  ownable_type: "Movie",
+  ownable_id: 27
+})

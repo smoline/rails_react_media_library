@@ -10,8 +10,8 @@ const Home = (props) => {
     }).then(response => {
         props.handleLogout()
         props.history.push("/")
-      })
-      .catch(error => console.log(error))
+    })
+    .catch(error => console.log(error))
   }
 
   return (
