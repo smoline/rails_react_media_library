@@ -8,6 +8,7 @@ import Home from "../components/home"
 import Login from "../components/authorization/login"
 import Signup from "../components/authorization/signup"
 import Movies from "./movies/movies"
+import Movie from "./movies/movie"
 
 // export default props => <>{Routes}</>
 
@@ -71,6 +72,15 @@ class App extends Component {
               <div>
                 <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} user={this.state.user} />
                 <Movies />
+              </div>
+            </ProtectedRoute>
+            <ProtectedRoute
+              loggedInStatus={this.state.isLoggedIn}
+              exact
+              path="/movies/:id">
+              <div>
+                <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} user={this.state.user} />
+                <Movie />
               </div>
             </ProtectedRoute>
           </Switch>
