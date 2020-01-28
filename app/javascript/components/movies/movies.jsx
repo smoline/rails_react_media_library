@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { Container, Header, Divider } from "semantic-ui-react"
+import { Container, Header, Divider, Button, Segment } from "semantic-ui-react"
 import "./movies.scss"
 
 import StarRating from "../star-rating/star-rating"
@@ -28,7 +28,7 @@ class Movies extends React.Component {
 
   render() {
     const { movies } = this.state
-    const allMovies = movies.map(({ id, title, movie_image_url, release_date, runtime }, index) => (
+    const allMovies = movies.map(({ id, title, movie_image_url, release_date, runtime, owner }, index) => (
       <div key={index} className="col-md-6 col-lg-4">
         <div key={id} className="media-container">
           <Link to={`/movies/${id}`}>
@@ -40,7 +40,7 @@ class Movies extends React.Component {
               <div className="media-row2">
                 <StarRating
                   numberOfStars="5"
-                  currentRating="3"
+                  currentRating={owner.rating}
                   onClick={this.setRating}
                 />
               </div>
@@ -54,7 +54,7 @@ class Movies extends React.Component {
       </div>
     ))
     const noMovie = (
-      <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
+      <div>
         <h4>
           No movies yet. Why not <Link to="/new_movie">create one</Link>
         </h4>
@@ -63,28 +63,22 @@ class Movies extends React.Component {
 
     return (
       <Container>
-        <Header as='h1' className='movie-header'>Movies for every occasion</Header>
-        <p className="lead text-muted">
-          We’ve pulled together our most popular movies, our latest
-          additions, and our editor’s picks, so there’s sure to be something
-          tempting for you to try.
-        </p>
-        <Divider className='custom-divider' />
-        <div className="py-5">
+        <div className="custom-header-container">
+          <Header as="h1" className="movie-header">Movies</Header>
+          <Button inverted className="custom-button" as={Link} to="/movies">
+            Add Movie
+          </Button>
+        </div>
+        <Divider className="custom-divider" />
+        
           <main className="container">
-            <div className="text-right mb-3">
-              <Link to="/movie" className="btn custom-button">
-                Create New Movie
-              </Link>
-            </div>
             <div className="main-container">
               {movies.length > 0 ? allMovies : noMovie}
             </div>
-            <Link to="/" className="btn btn-link">
+            <Link to="/" className="custom-button">
               Home
             </Link>
           </main>
-        </div>
       </Container>
     )
   }
