@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 import { Container, Header, Divider } from "semantic-ui-react"
 import "./movies.scss"
 
+import StarRating from "../star-rating/star-rating"
+
 class Movies extends React.Component {
   constructor(props) {
     super(props)
@@ -26,7 +28,7 @@ class Movies extends React.Component {
 
   render() {
     const { movies } = this.state
-    const allMovies = movies.map(({ id, title, movie_image_url, release_date, runtime}, index) => (
+    const allMovies = movies.map(({ id, title, movie_image_url, release_date, runtime }, index) => (
       <div key={index} className="col-md-6 col-lg-4">
         <div key={id} className="media-container">
           <Link to={`/movies/${id}`}>
@@ -35,10 +37,14 @@ class Movies extends React.Component {
               <div className="media-title">
                 <p>{title}</p>
               </div>
-              <div className="media-row3">
-                Rating
-              </div>
               <div className="media-row2">
+                <StarRating
+                  numberOfStars="5"
+                  currentRating="3"
+                  onClick={this.setRating}
+                />
+              </div>
+              <div className="media-row3">
                 <p>{release_date}</p>
                 <p>{runtime} mins</p>
               </div>
@@ -50,7 +56,7 @@ class Movies extends React.Component {
     const noMovie = (
       <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
         <h4>
-          No moview yet. Why not <Link to="/new_movie">create one</Link>
+          No movies yet. Why not <Link to="/new_movie">create one</Link>
         </h4>
       </div>
     )

@@ -52,35 +52,34 @@
 
   p {
     font-weight: bold;
-    padding: 6px 0 0;
-    height: 36px;
+    padding: 6px 0 6px;
+    height: 40px;
     margin: 0;
   }
 }
 
 .media-row2 {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  color: #eeeeee;
+  max-width: 185px;
+  margin: 6px 0;
+}
+
+.media-row3 {
   width: 100%;
   max-width: 185px;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   color: #eeeeee;
-  
+
   p {
-    padding: 0;
-    margin: 6px 0;
+    margin: 0 0 6px;
   }
 }
 
-.media-row3 {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  color: #eeeeee;
-  max-width: 185px;
-
-  p {
-    padding: 0;
-    margin: 6px 0;
-  }
+.custom-rating {
+  color: #eeeeee !important;
 }
