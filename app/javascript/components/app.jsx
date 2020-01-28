@@ -5,9 +5,9 @@ import Navigation from "../components/navigation"
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import Home from "../components/home"
-import Login from "../components/login"
-import Signup from "../components/signup"
-import Movies from "../components/movies"
+import Login from "../components/authorization/login"
+import Signup from "../components/authorization/signup"
+import Movies from "./movies/movies"
 
 // export default props => <>{Routes}</>
 
@@ -19,7 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoggedIn: false,
+      isLoggedIn: true,
       user: {}
     }
   }
@@ -33,6 +33,7 @@ class App extends Component {
     .then(response => {
       return response.json()
     }).then(data => {
+      console.log(data)
       if (data.logged_in) {
         this.handleLogin(data)
       } else {
