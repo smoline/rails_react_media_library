@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 // import Routes from "../routes/index"
 
-import Navigation from "../components/navigation"
+import Navigation from "../components/navigation/navigation"
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import Home from "../components/home"
@@ -33,7 +33,6 @@ class App extends Component {
     .then(response => {
       return response.json()
     }).then(data => {
-      console.log(data)
       if (data.logged_in) {
         this.handleLogin(data)
       } else {
@@ -70,7 +69,7 @@ class App extends Component {
               exact
               path="/movies">
               <div>
-                <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} />
+                <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} user={this.state.user} />
                 <Movies />
               </div>
             </ProtectedRoute>

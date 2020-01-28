@@ -75,7 +75,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props)
     const { email, password } = this.state
     return (
       <Grid centered style={{ height: "100vh" }} verticalAlign="middle">

@@ -15,6 +15,10 @@ class Signup extends Component {
     }
   }
 
+  componentDidMount() {
+    return this.props.loggedInStatus ? this.redirect() : null
+  }
+
   handleChange = (event) => {
     const { name, value } = event.target
     this.setState({
