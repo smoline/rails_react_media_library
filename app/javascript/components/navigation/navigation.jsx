@@ -5,13 +5,10 @@ import "./navigation.scss"
 export default class Navigation extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      activeItem: "Movies",
-      user: this.props.user
-    }
+    this.state = {}
   }
 
-  handleItemClick = (e, { name, text }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => this.props.history.push(`/${name}`)
 
   handleLogoutClick = () => {
     fetch('/logout', {
@@ -24,36 +21,29 @@ export default class Navigation extends Component {
   }
 
   render() {
-    console.log(this.props)
-    const { activeItem } = this.state
-
     return (
       <Menu inverted>
         <Menu.Header content="My Media Library" className="custom-menu-header" />
-        <Dropdown item text="Movies" name="Movies">
+        <Dropdown item text="Movies" name="movies">
           <Dropdown.Menu>
             <Dropdown.Item
               text="Sort by Title"
-              name="Movies"
-              active={activeItem === "Movies"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Sort by Release Date"
-              name="Movies"
-              active={activeItem === "Movies"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Sort by When Added"
-              name="Movies"
-              active={activeItem === "Movies"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Favorites Only"
-              name="Movies"
-              active={activeItem === "Movies"}
+              name="movies"
               onClick={this.handleItemClick}
             />
           </Dropdown.Menu>
@@ -62,26 +52,22 @@ export default class Navigation extends Component {
           <Dropdown.Menu>
             <Dropdown.Item
               text="Sort by Title"
-              name="TV Shows"
-              active={activeItem === "TV Shows"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Sort by Release Date"
-              name="TV Shows"
-              active={activeItem === "TV Shows"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Sort by When Added"
-              name="TV Shows"
-              active={activeItem === "TV Shows"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Favorites Only"
-              name="TV Shows"
-              active={activeItem === "TV Shows"}
+              name="movies"
               onClick={this.handleItemClick}
             />
           </Dropdown.Menu>
@@ -90,26 +76,22 @@ export default class Navigation extends Component {
           <Dropdown.Menu>
             <Dropdown.Item
               text="Sort by Title"
-              name="Games"
-              active={activeItem === "Games"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Sort by Release Date"
-              name="Games"
-              active={activeItem === "Games"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Sort by When Added"
-              name="Games"
-              active={activeItem === "Games"}
+              name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
               text="Favorites Only"
-              name="Games"
-              active={activeItem === "Games"}
+              name="movies"
               onClick={this.handleItemClick}
             />
           </Dropdown.Menu>
@@ -118,10 +100,9 @@ export default class Navigation extends Component {
           <Menu.Item>
             <Input icon="search" placeholder="Search..." />
           </Menu.Item>
-          <Menu.Item name={`${this.props.user.first_name} ${this.props.user.last_name}`} />
+          <Menu.Item name={`${this.props.loggedInStatus.user.first_name} ${this.props.loggedInStatus.user.last_name}`} />
           <Menu.Item
             name="Logout"
-            active={activeItem === "Logout"}
             onClick={this.handleLogoutClick}
           />
         </Menu.Menu>

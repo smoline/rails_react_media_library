@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-// import Routes from "../routes/index"
 
 import Navigation from "../components/navigation/navigation"
 
@@ -10,11 +9,16 @@ import Signup from "../components/authorization/signup"
 import Movies from "./movies/movies"
 import Movie from "./movies/movie"
 
-// export default props => <>{Routes}</>
-
-const ProtectedRoute = ({ loggedInStatus, ...props }) => {
-  return loggedInStatus ? <Route {...props} /> : <Redirect to="/login" />
-}
+const ProtectedRoute = ({ loggedInStatus, path, component: Component, handleLogout, ...props }) => (
+  <Route exact path={path} render={(props) => (
+    loggedInStatus.isLoggedIn === true
+      ? <div>
+          <Navigation {...props} handleLogout={handleLogout} loggedInStatus={loggedInStatus} />
+          <Component {...props} />
+        </div>
+      : <Redirect to="/login" />
+  )} />
+)
 
 class App extends Component {
   constructor(props) {
@@ -65,24 +69,21 @@ class App extends Component {
             <Route exact path="/" render={props => (<Home {...props} handleLogout={this.handleLogout} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
             <Route exact path="/login" render={props => (<Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
             <Route exact path="/signup" render={props => (<Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn} />)} />
+
             <ProtectedRoute
-              loggedInStatus={this.state.isLoggedIn}
-              exact
-              path="/movies">
-              <div>
-                <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} user={this.state.user} />
-                <Movies />
-              </div>
-            </ProtectedRoute>
+              loggedInStatus={this.state}
+              path="/movies/:id"
+              component={Movie}
+              handleLogout={this.handleLogout}
+            />
+
             <ProtectedRoute
-              loggedInStatus={this.state.isLoggedIn}
-              exact
-              path="/movies/:id">
-              <div>
-                <Navigation handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn} user={this.state.user} />
-                <Movie />
-              </div>
-            </ProtectedRoute>
+              loggedInStatus={this.state}
+              path="/movies"
+              component={Movies}
+              handleLogout={this.handleLogout}
+            />
+
           </Switch>
         </BrowserRouter>
       </div>
