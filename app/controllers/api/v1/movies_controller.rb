@@ -20,10 +20,12 @@ class Api::V1::MoviesController < ApplicationController
 
   def show
     movie = Movie.find(params[:id])
-    if movie
-      render json: movie
+    owner = movie.owners.find_by(user_id: current_user.id)
+    movie_owner = movie.as_json.merge!(owner: owner.as_json)
+    if movie_owner
+      render json: movie_owner
     else
-      render json: movie.errors
+      render json: movie_owner.errors
     end
   end
 
