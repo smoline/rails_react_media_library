@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { Container, Header, Divider, Button, Segment } from "semantic-ui-react"
-import "./movies.scss"
+import { Container, Header, Divider, Button } from "semantic-ui-react"
+import "./movie.scss"
 
 import StarRating from "../star-rating/star-rating"
 
@@ -27,30 +27,38 @@ class Movie extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    console.log(this.props)
     const movie = this.state.movie
-    (
-        <div key={movie.id} className="media-container">
-          <Link to={`/movies/${movie.id}`}>
-            <div className="image-box"><img src={movie.movie_image_url} /></div>
-            <div className="text-container">
-              <div className="media-title">
-                <p>{title}</p>
-              </div>
-              <div className="media-row2">
-                <StarRating
-                  numberOfStars="5"
-                  currentRating={movie.owner.rating}
-                  onClick={this.setRating}
-                />
-              </div>
-              <div className="media-row3">
-                <p>{movie.release_date}</p>
-                <p>{movie.runtime} mins</p>
-              </div>
+    const showMovie = (
+      <div className="movie-show-main-container">
+        <div className="movie-show-movie-container">
+          <div className="movie-show-image-box"><img src={movie.movie_image_url} /></div>
+          <div className="movie-show-text-container">
+            <div className="movie-title">
+              <h2>{movie.title}</h2>
             </div>
-          </Link>
+            <div className="movie-row-rating">
+              <StarRating
+                numberOfStars="5"
+                currentRating="3"
+                onClick={this.setRating}
+              />
+            </div>
+            <div className="movie-row">
+              <p>{this.state.movie.description}</p>
+            </div>
+            <div className="movie-row">
+              <p>"...{this.state.movie.tagline}"</p>
+            </div>
+            <div className="movie-row">
+              <p>Release Date: {this.state.movie.release_date}</p>
+            </div>
+            <div className="movie-row">
+              <p>Runtime: {this.state.movie.runtime} mins</p>
+            </div>
+          </div>
         </div>
+      </div>
     )
     const noMovie = (
       <div>
@@ -63,21 +71,18 @@ class Movie extends React.Component {
     return (
       <Container>
         <div className="custom-header-container">
-          <Header as="h1" className="movie-header">Movies</Header>
+          <Header as="h1" className="movie-header">{this.state.movie.title}</Header>
           <Button inverted className="custom-button" as={Link} to="/movies">
             Add Movie
           </Button>
         </div>
         <Divider className="custom-divider" />
-
-        <main className="container">
-          <div className="main-container">
-            {movie ? allMovies : noMovie}
-          </div>
-          <Link to="/" className="custom-button">
-            Home
-            </Link>
-        </main>
+        <div className="show-container">
+          {movie ? showMovie : noMovie}
+        </div>
+        <Link to="/" className="custom-button">
+          Home
+        </Link>
       </Container>
     )
   }
