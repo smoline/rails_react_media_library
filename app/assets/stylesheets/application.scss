@@ -61,3 +61,19 @@ h1, h2, h3, h4, h5, p {
   color: #1976d2 !important;
 }
 
+.custom-header-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.movie-header {
+  padding-top: 16px;
+  color: #eeeeee;
+  font-family: Helvetica, Arial, sans-serif;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #424242;
+  margin-bottom: 16px;
+}
