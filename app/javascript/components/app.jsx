@@ -6,8 +6,8 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import Home from "../components/home"
 import Login from "../components/authorization/login"
 import Signup from "../components/authorization/signup"
-import Movies from "./movies/movies"
-import Movie from "./movies/movie"
+import Movies from "./movies-index/movies"
+import Movie from "./movies-show/movie"
 
 const ProtectedRoute = ({ loggedInStatus, path, component: Component, handleLogout, ...props }) => (
   <Route exact path={path} render={(props) => (

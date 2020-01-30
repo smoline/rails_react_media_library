@@ -123,7 +123,7 @@ class Signup extends Component {
               onChange={this.handleChange}
             />
 
-            <Button placeholder="submit" type="submit">
+            <Button placeholder="submit" type="submit" className="custom-button">
               Sign Up
             </Button>
             <p>

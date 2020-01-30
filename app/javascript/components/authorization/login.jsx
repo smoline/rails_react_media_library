@@ -96,7 +96,7 @@ class Login extends Component {
               value={password}
               onChange={this.handleChange}
             />
-            <Button inverted placeholder="submit" type="submit">
+            <Button placeholder="submit" type="submit" className="custom-button">
               Log In
             </Button>
             <p>

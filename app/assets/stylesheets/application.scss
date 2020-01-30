@@ -58,7 +58,17 @@ h1, h2, h3, h4, h5, p {
 }
 
 .custom-button {
-  color: #1976d2 !important;
+  background-image: linear-gradient(180deg, #616161 30%, #424242 90%) !important;
+  color: #e0e0e0 !important;
+  margin-left: 6px;
+
+  &:hover {
+    background-image: linear-gradient(180deg, #616161 10%, #424242 60%) !important;
+  }
+
+  &:active {
+    background-image: linear-gradient(180deg, #616161 .1%, #424242 40%) !important;
+  }
 }
 
 .custom-header-container {

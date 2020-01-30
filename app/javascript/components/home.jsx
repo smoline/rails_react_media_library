@@ -25,13 +25,13 @@ const Home = (props) => {
           props.loggedInStatus
         ? <div>
             <div>
-              <Button inverted className="custom-button" as={Link} to="/logout" onClick={handleClick}>
+              <Button className="custom-button" as={Link} to="/logout" onClick={handleClick}>
                 Log Out
               </Button>
             </div>
             <br></br>
             <div>
-              <Button inverted className="custom-button" as={Link} to="/movies">
+              <Button className="custom-button" as={Link} to="/movies">
                 Movies
               </Button>
             </div>
@@ -39,13 +39,13 @@ const Home = (props) => {
 
         : <div>
             <div>
-              <Button inverted className="custom-button" as={Link} to="/login">
+              <Button className="custom-button" as={Link} to="/login">
                 Log In
               </Button>
             </div>
             <br></br>
             <div>
-              <Button inverted className="custom-button" as={Link} to="/signup">
+              <Button className="custom-button" as={Link} to="/signup">
                 Sign Up
               </Button>
             </div>
