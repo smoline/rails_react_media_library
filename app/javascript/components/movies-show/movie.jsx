@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { Container, Header, Divider, Button } from "semantic-ui-react"
+import { Container, Header, Divider, Button, Image } from "semantic-ui-react"
 import "./movie.scss"
 
 import StarRating from "../star-rating/star-rating"
@@ -9,7 +9,8 @@ class Movie extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      movie: {}
+      movie: {},
+      owner: {}
     }
   }
 
@@ -22,17 +23,17 @@ class Movie extends React.Component {
         }
         throw new Error("Network response was not ok.")
       })
-      .then(response => this.setState({ movie: response }))
+      .then(response => this.setState({ movie: response, owner: response.owner }))
       .catch(() => this.props.history.push("/"))
   }
 
   render() {
-    console.log(this.props)
     const movie = this.state.movie
+    const owner = this.state.owner
     const showMovie = (
       <div className="movie-show-main-container">
         <div className="movie-show-movie-container">
-          <div className="movie-show-image-box"><img src={movie.movie_image_url} /></div>
+          <Image className="movie-show-image-box"><img src={movie.movie_image_url} /></Image>
           <div className="movie-show-text-container">
             <div className="movie-title">
               <h2>{movie.title}</h2>
@@ -40,21 +41,24 @@ class Movie extends React.Component {
             <div className="movie-row-rating">
               <StarRating
                 numberOfStars="5"
-                currentRating="3"
+                currentRating={owner.rating}
                 onClick={this.setRating}
               />
             </div>
             <div className="movie-row">
-              <p>{this.state.movie.description}</p>
+              <p>{movie.description}</p>
             </div>
             <div className="movie-row">
-              <p>"...{this.state.movie.tagline}"</p>
+              <p>"...{movie.tagline}"</p>
             </div>
             <div className="movie-row">
-              <p>Release Date: {this.state.movie.release_date}</p>
+              <p><span className="custom-label">Release Date: </span>{movie.release_date}</p>
             </div>
             <div className="movie-row">
-              <p>Runtime: {this.state.movie.runtime} mins</p>
+              <p><span className="custom-label">Runtime: </span>{movie.runtime} mins</p>
+            </div>
+            <div className="movie-row">
+              <p><span className="custom-label">Notes: </span>{movie.runtime}</p>
             </div>
           </div>
         </div>
@@ -67,22 +71,27 @@ class Movie extends React.Component {
         </h4>
       </div>
     )
-
+ 
     return (
       <Container>
         <div className="custom-header-container">
-          <Header as="h1" className="movie-header">{this.state.movie.title}</Header>
-          <Button inverted className="custom-button" as={Link} to="/movies">
-            Add Movie
-          </Button>
+          <Header as="h1" className="movie-header">Movie</Header>
+          <div>
+            <Button className="custom-button" as={Link} to="/movies">
+              Add
+            </Button>
+            <Button className="custom-button" as={Link} to="/movies">
+              Edit
+            </Button>
+            <Button className="custom-button" as={Link} to="/movies">
+              Delete
+            </Button>
+          </div>
         </div>
         <Divider className="custom-divider" />
         <div className="show-container">
-          {movie ? showMovie : noMovie}
+          {movie && owner.rating ? showMovie : noMovie}
         </div>
-        <Link to="/" className="custom-button">
-          Home
-        </Link>
       </Container>
     )
   }
