@@ -65,20 +65,14 @@ class Movies extends React.Component {
       <Container>
         <div className="custom-header-container">
           <Header as="h1" className="movie-header">Movies</Header>
-          <Button inverted className="custom-button" as={Link} to="/movies">
+          <Button className="custom-button" as={Link} to="/movies">
             Add Movie
           </Button>
         </div>
         <Divider className="custom-divider" />
-        
-          <main className="container">
-            <div className="main-container">
-              {movies.length > 0 ? allMovies : noMovie}
-            </div>
-            <Link to="/" className="custom-button">
-              Home
-            </Link>
-          </main>
+        <div className="main-container">
+          {movies.length > 0 ? allMovies : noMovie}
+        </div>
       </Container>
     )
   }
