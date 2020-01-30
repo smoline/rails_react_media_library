@@ -1,42 +1,41 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import './star-rating.scss'
 
-import './star-rating.scss';
-
-class StarRating extends Component {
+export default class StarRating extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       currentRating: this.props.currentRating
-    };
+    }
   }
 
   componentDidMount() {
-    this.setRating();
+    this.setRating()
   }
 
   hoverHandler = ev => {
-    const stars = ev.target.parentElement.getElementsByClassName('star');
-    const hoverValue = ev.target.dataset.value;
+    const stars = ev.target.parentElement.getElementsByClassName('star')
+    const hoverValue = ev.target.dataset.value
     Array.from(stars).forEach(star => {
-      star.style.color = hoverValue >= star.dataset.value ? '#2196f3' : '#757575';
-    });
-  };
+      star.style.color = hoverValue >= star.dataset.value ? '#2196f3' : '#757575'
+    })
+  }
 
   setRating = ev => {
-    const stars = this.refs.rating.getElementsByClassName('star');
+    const stars = this.refs.rating.getElementsByClassName('star')
     Array.from(stars).forEach(star => {
       star.style.color =
-        this.state.currentRating >= star.dataset.value ? '#2196f3' : '#757575';
-    });
-  };
+        this.state.currentRating >= star.dataset.value ? '#2196f3' : '#757575'
+    })
+  }
 
   starClickHandler = ev => {
     let rating = ev.target.dataset.value;
-    this.setState({ currentRating: rating }); // set state so the rating stays highlighted
+    this.setState({ currentRating: rating }) // set state so the rating stays highlighted
     if (this.props.onClick) {
-      this.props.onClick(rating); // emit the event up to the parent
+      this.props.onClick(rating) // emit the event up to the parent
     }
-  };
+  }
 
   render() {
     return (
@@ -57,11 +56,9 @@ class StarRating extends Component {
             >
               &#9733;
             </span>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
 }
-
-export default StarRating;

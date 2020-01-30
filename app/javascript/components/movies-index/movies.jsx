@@ -65,7 +65,7 @@ class Movies extends React.Component {
       <Container>
         <div className="custom-header-container">
           <Header as="h1" className="movie-header">Movies</Header>
-          <Button className="custom-button" as={Link} to="/movies">
+          <Button className="custom-button" as={Link} to="/movies/new">
             Add Movie
           </Button>
         </div>
