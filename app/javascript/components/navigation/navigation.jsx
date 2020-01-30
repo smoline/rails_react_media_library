@@ -22,74 +22,86 @@ export default class Navigation extends Component {
 
   render() {
     return (
-      <Menu inverted>
+      <Menu className="custom-nav">
         <Menu.Header content="My Media Library" className="custom-menu-header" />
-        <Dropdown item text="Movies" name="movies">
+        <Dropdown item text="Movies" name="movies" className="custom-nav-dropdown">
           <Dropdown.Menu>
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by Title"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by Release Date"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by When Added"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Favorites Only"
               name="movies"
               onClick={this.handleItemClick}
             />
           </Dropdown.Menu>
         </Dropdown>
-        <Dropdown item text="TV Shows">
+        <Dropdown item text="TV Shows" className="custom-nav-dropdown">
           <Dropdown.Menu>
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by Title"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by Release Date"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by When Added"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Favorites Only"
               name="movies"
               onClick={this.handleItemClick}
             />
           </Dropdown.Menu>
         </Dropdown>
-        <Dropdown item text="Games">
+        <Dropdown item text="Games" className="custom-nav-dropdown">
           <Dropdown.Menu>
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by Title"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by Release Date"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Sort by When Added"
               name="movies"
               onClick={this.handleItemClick}
             />
             <Dropdown.Item
+              className="custom-menu-item"
               text="Favorites Only"
               name="movies"
               onClick={this.handleItemClick}
@@ -100,10 +112,11 @@ export default class Navigation extends Component {
           <Menu.Item>
             <Input icon="search" placeholder="Search..." />
           </Menu.Item>
-          <Menu.Item name={`${this.props.loggedInStatus.user.first_name} ${this.props.loggedInStatus.user.last_name}`} />
+          <Menu.Item className="custom-nav-dropdown" name={`${this.props.loggedInStatus.user.first_name} ${this.props.loggedInStatus.user.last_name}`} />
           <Menu.Item
             name="Logout"
             onClick={this.handleLogoutClick}
+            className="custom-nav-dropdown"
           />
         </Menu.Menu>
       </Menu>

@@ -4,5 +4,27 @@
   padding: 0 16px 0 16px;
   font-size: 24px;
   font-weight: bold;
-  color: #42a5f5;
+  color: #e0e0e0;
+}
+
+.custom-nav {
+  background-image: linear-gradient(180deg, #616161 30%, #424242 90%) !important;
+}
+
+.custom-nav-dropdown {
+  color: #e0e0e0 !important;
+}
+
+.menu.transition.visible {
+  background: #424242 !important;
+}
+
+.ui.menu .ui.dropdown .menu {
+  .item.custom-menu-item {
+    color: #e0e0e0 !important;
+
+    &:hover {
+      color: #e0e0e0 !important;
+    }
+  }
 }
