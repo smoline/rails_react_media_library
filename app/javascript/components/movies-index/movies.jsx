@@ -5,7 +5,7 @@ import "./movies.scss"
 
 import StarRating from "../star-rating/star-rating"
 
-class Movies extends React.Component {
+export default class Movies extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -41,7 +41,6 @@ class Movies extends React.Component {
                 <StarRating
                   numberOfStars="5"
                   currentRating={owner.rating}
-                  onClick={this.setRating}
                 />
               </div>
               <div className="media-row3">
@@ -77,4 +76,3 @@ class Movies extends React.Component {
     )
   }
 }
-export default Movies
