@@ -1,46 +1,159 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { Container, Header, Divider, Button, Form, TextArea } from "semantic-ui-react"
-import "./movie-new.scss"
-
-import StarRating from "../star-rating/star-rating"
+import { Container, Header, Divider, Button, Form, Segment, Modal } from "semantic-ui-react"
+import MovieForm from "../movie-form/movie-form"
+import "../movie-form/movie-form.scss"
 
 export default class MovieNew extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      title: "",
-      description: "",
-      tagline: "",
-      movie_image_url: "",
-      tmdb_id: "",
-      imdb_id: "",
-      release_date: "",
-      runtime: "",
-      notes: "",
-      upc: "",
-      rating: ""
+      movie: {
+        title: "",
+        description: "",
+        tagline: "",
+        movie_image_url: "",
+        tmdb_id: "",
+        imdb_id: "",
+        release_date: "",
+        runtime: "",
+        notes: "",
+        upc: "",
+        rating: ""
+      },
+      isSearching: false,
+      results: [],
+      value: "",
+      modalOpen: false
     }
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target
+  handleChange = (name, value) => {
     this.setState({
-      [name]: value
+      movie: { ...this.state.movie, [name]: value}
     })
   }
 
   setRating = rating => {
-    this.setState({ rating: rating })
+    this.setState({ 
+      movie: { ...this.state.movie, rating: rating }
+    })
   }
+
+  handleSearchChange = (e, { value }) => {
+    this.setState({ value })
+  }
+
+  handleTitleSearch = (event) => {
+    let title = { title: this.state.value }
+    const token = document.getElementsByName("csrf-token")[0].content
+
+    fetch("/api/v1/movies/movies_search", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": token
+      },
+      body: JSON.stringify(title)
+    }).then(response => {
+      return response.json()
+    }).then(data => {
+      this.setState({ results: data, modalOpen: !this.state.modalOpen })
+    })
+    .catch(error => console.log("api errors:", error))
+  }
+
+  moreMovieInfo = (tmdb_id) => {
+    let data = { tmdb_id: tmdb_id.toString() }
+    const token = document.getElementsByName("csrf-token")[0].content
+
+    fetch("/api/v1/movies/movie_info", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": token
+      },
+      body: JSON.stringify(data)
+    }).then(response => {
+      return response.json()
+    }).then(data => {
+      this.setState({
+        movie: {
+          ...this.state.movie,
+          title: data.title,
+          description: data.overview,
+          tagline: data.tagline,
+          movie_image_url: `http://image.tmdb.org/t/p/w185/${data.poster_path}`,
+          tmdb_id: data.id,
+          imdb_id: data.imdb_id,
+          release_date: data.release_date,
+          runtime: data.runtime,
+        },
+        isSearching: !this.state.isSearching
+      })
+    })
+    .catch(error => console.log("api errors:", error))
+  }
+
+  changeSearch = () => this.setState({ isSearching: !this.state.isSearching })
+
+  handleResultSelect = (result) => {
+    this.setState({
+      modalOpen: !this.state.modalOpen,
+      movie: {
+        ...this.state.movie,
+        title: result.title,
+        tmdb_id: result.id.toString()
+      }
+    })
+    this.moreMovieInfo(result.id)
+  }
+
+  handleModal = () => this.setState({ modalOpen: !this.state.modalOpen })
+
+  resultsModal = (results) => (
+    <Modal
+      open={this.state.modalOpen}
+      onClose={this.handleModal}>
+      <Modal.Header>Select a Movie</Modal.Header>
+      <Modal.Content>
+        {results.map((result) => (
+          <Modal.Description key={result.id} className="modal-choice">
+            <button
+              className="modal-text"
+              onClick={() => this.handleResultSelect(result)}>
+                <span style={{ fontWeight: 'bold' }}>{result.title}</span> - {result.release_date} - {result.overview}
+            </button>
+          </Modal.Description>
+        ))}
+      </Modal.Content>
+    </Modal>
+  )
 
   handleSubmit = (event) => {
     event.preventDefault()
 
-    const movie = this.state
+    const movie = {
+      title: this.state.movie.title,
+      description: this.state.movie.description,
+      tagline: this.state.movie.tagline,
+      movie_image_url: this.state.movie.tagline,
+      tmdb_id: this.state.movie.tmdb_id.toString(),
+      imdb_id: this.state.movie.imdb_id,
+      release_date: this.state.movie.release_date,
+      runtime: this.state.movie.runtime.toString(),
+      notes: this.state.movie.notes,
+      upc: this.state.movie.upc,
+      rating: this.state.movie.rating
+    }
     const token = document.getElementsByName("csrf-token")[0].content
+    console.log(movie)
 
-    fetch("/movies/create", {
+    fetch("/api/v1/movies/create", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -80,114 +193,67 @@ export default class MovieNew extends React.Component {
   }
 
   render() {
-    console.log(this.state)
-    const { title, description, tagline, movie_image_url, tmdb_id, imdb_id, release_date, runtime, notes, upc, rating } = this.state
+    const movie = this.state.movie
+    const { value, results, modalOpen, isSearching } = this.state
+   
+    const searchForm = (
+      <Form className="movie-form">
+        <Form.Group>
+          <Form.Input
+            width={6}
+            placeholder="Search..."
+            name="search"
+            value={value}
+            onChange={this.handleSearchChange}
+            action={
+              <Button onClick={this.handleTitleSearch}>
+                Search
+              </Button>
+            }
+          />
+          <Form.Field width={10}>
+            <Segment>
+              <Header>State</Header>
+              <pre style={{ overflowX: 'auto' }}>
+                {JSON.stringify(this.state, null, 2)}
+              </pre>
+            </Segment>
+          </Form.Field>
+        </Form.Group>
+      </Form>
+    )
+
+    const movieForm = (
+      <MovieForm
+        movie={movie}
+        onSubmit={this.handleSubmit}
+        onInputChange={this.handleChange}
+        setRating={this.setRating}
+      />
+    )
+
     return (
       <Container>
         <div className="custom-header-container">
           <Header as="h1" className="movie-header">Add Movie</Header>
           <div>
+            {isSearching ? 
+              <Button className="custom-button" onClick={this.changeSearch}>
+                Movie Form
+              </Button>
+              :
+              <Button className="custom-button" onClick={this.changeSearch}>
+                Search By Title
+              </Button>
+            }
             <Button className="custom-button" as={Link} to="/movies">
               Movies
             </Button>
           </div>
         </div>
         <Divider className="custom-divider" />
-        <Form inverted onSubmit={this.handleSubmit} className="movie-form">
-          <Form.Group>
-            <Form.Input
-              width={8}
-              label="Title"
-              placeholder="Title"
-              name="title"
-              value={title}
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              width={6}
-              label="UPC"
-              placeholder="UPC"
-              name="upc"
-              value={upc}
-              onChange={this.handleChange}
-            />
-            <Form.Field width={2}>
-              <label>Rating</label>
-              <StarRating
-                numberOfStars="5"
-                currentRating={rating}
-                onClick={this.setRating}
-              />
-            </Form.Field>
-          </Form.Group>
-          <Form.Input
-            label="Movie Image Url"
-            placeholder="Movie Image Url"
-            name="movie_image_url"
-            value={movie_image_url}
-            onChange={this.handleChange}
-          />
-          <Form.Group widths="equal">
-            <Form.Input
-              label="Release Date"
-              placeholder="Release Date"
-              name="release_date"
-              value={release_date}
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="Runtime"
-              placeholder="Runtime in minutes"
-              name="runtime"
-              value={runtime}
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="TMDB ID"
-              placeholder="TMDB ID"
-              name="tmdb_id"
-              value={tmdb_id}
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="IMDB ID"
-              placeholder="IMDB ID"
-              name="imdb_id"
-              value={imdb_id}
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Field>
-            <label>Description</label>
-            <TextArea
-              placeholder="Description"
-              rows={2}
-              name="description"
-              value={description}
-              onChange={this.handleChange}
-            />
-          </Form.Field>
-          <Form.Input
-            label="Tagline"
-            placeholder="Tagline"
-            name="tagline"
-            value={tagline}
-            onChange={this.handleChange}
-          />
-          <Form.Field>
-            <label>Notes</label>
-            <TextArea
-              placeholder="Notes"
-              rows={2}
-              name="Notes"
-              value={notes}
-              onChange={this.handleChange}
-            />
-          </Form.Field>
-          <Button placeholder="submit" type="submit" className="custom-button">
-            Save
-          </Button>
-        </Form>
+        {modalOpen ? this.resultsModal(results) : null}
+        {isSearching ? searchForm : movieForm}
       </Container>
     )
   }

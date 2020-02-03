@@ -1,3 +1,14 @@
-.movie-form {
-  padding: 24px;
+.modal-choice {
+  display: flex;
+  justify-content: start;
+  flex-direction: row;
+  align-items: center;
+
+  .modal-text {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 24px;
+    font-weight: bold;
+  }
 }
+
