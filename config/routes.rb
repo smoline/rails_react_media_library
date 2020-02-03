@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       get 'movies/:id', to: 'movies#show'
       put 'movies/update'
       delete '/destroy/:id', to: 'movies#destroy'
+      post 'movies/movies_search', to: 'movies#movies_search'
+      post 'movies/movie_info', to: 'movies#movie_info'
     end
   end
 
