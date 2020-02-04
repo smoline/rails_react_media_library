@@ -55,7 +55,7 @@ export default class Movies extends React.Component {
     const noMovie = (
       <div>
         <h4>
-          No movies yet. Why not <Link to="/new_movie">create one</Link>
+          No movies yet. Why not <Link to="/movies/new">create one</Link>
         </h4>
       </div>
     )

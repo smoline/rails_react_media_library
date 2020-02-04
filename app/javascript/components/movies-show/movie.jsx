@@ -78,13 +78,13 @@ class Movie extends React.Component {
           <Header as="h1" className="movie-header">Movie</Header>
           <div>
             <Button className="custom-button" as={Link} to="/movies">
+              Movies
+            </Button>
+            <Button className="custom-button" as={Link} to="/movies/new">
               Add
             </Button>
-            <Button className="custom-button" as={Link} to="/movies">
+            <Button className="custom-button" as={Link} to={`/movies/${this.props.match.params.id}/edit`}>
               Edit
-            </Button>
-            <Button className="custom-button" as={Link} to="/movies">
-              Delete
             </Button>
           </div>
         </div>
