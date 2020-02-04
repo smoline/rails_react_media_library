@@ -9,6 +9,7 @@ import Signup from "../components/authorization/signup"
 import Movies from "../components/movies-index/movies"
 import Movie from "../components/movies-show/movie"
 import MovieNew from "../components/movie-new/movie-new"
+import MovieEdit from "../components/movie-edit/movie-edit"
 
 const ProtectedRoute = ({ loggedInStatus, path, component: Component, handleLogout }) => (
   <Route exact path={path} render={(props) => (
@@ -75,6 +76,13 @@ export default class Routes extends Component {
               loggedInStatus={this.state}
               path="/movies/new"
               component={MovieNew}
+              handleLogout={this.handleLogout}
+            />
+
+            <ProtectedRoute
+              loggedInStatus={this.state}
+              path="/movies/:id/edit"
+              component={MovieEdit}
               handleLogout={this.handleLogout}
             />
             
