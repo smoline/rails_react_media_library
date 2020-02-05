@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { Container, Header, Divider, Button, Form, Segment, Modal } from "semantic-ui-react"
+import { sortBy, reverse } from "lodash"
 import MovieForm from "../movie-form/movie-form"
 import "../movie-form/movie-form.scss"
 
@@ -21,7 +22,7 @@ export default class MovieNew extends React.Component {
         upc: "",
         rating: ""
       },
-      isSearching: false,
+      isSearching: true,
       results: [],
       value: "",
       modalOpen: false
@@ -60,7 +61,16 @@ export default class MovieNew extends React.Component {
     }).then(response => {
       return response.json()
     }).then(data => {
-      this.setState({ results: data, modalOpen: !this.state.modalOpen })
+      if (data[0]) {
+        var sortedResults = reverse(sortBy(data, ["release_date"]))
+        this.setState({ results: sortedResults, modalOpen: !this.state.modalOpen })
+      } else if(data.tmdb_id) {
+        this.setState({ results: data})
+        this.moreMovieInfo(data.tmdb_id.toString())
+      } else {
+        console.log(data.id)
+        this.moreMovieInfo(data.id.toString())
+      }
     })
     .catch(error => console.log("api errors:", error))
   }
@@ -85,10 +95,10 @@ export default class MovieNew extends React.Component {
         movie: {
           ...this.state.movie,
           title: data.title,
-          description: data.overview,
+          description: data.overview || data.description,
           tagline: data.tagline,
-          movie_image_url: `http://image.tmdb.org/t/p/w185/${data.poster_path}`,
-          tmdb_id: data.id,
+          movie_image_url: data.movie_image_url || `http://image.tmdb.org/t/p/w185/${data.poster_path}`,
+          tmdb_id: data.tmdb_id || data.id,
           imdb_id: data.imdb_id,
           release_date: data.release_date,
           runtime: data.runtime,
@@ -107,7 +117,7 @@ export default class MovieNew extends React.Component {
       movie: {
         ...this.state.movie,
         title: result.title,
-        tmdb_id: result.id.toString()
+        tmdb_id: result.tmdb_id || result.id
       }
     })
     this.moreMovieInfo(result.id)
@@ -146,14 +156,16 @@ export default class MovieNew extends React.Component {
       imdb_id: this.state.movie.imdb_id,
       release_date: this.state.movie.release_date,
       runtime: this.state.movie.runtime.toString(),
-      notes: this.state.movie.notes,
-      upc: this.state.movie.upc,
-      rating: this.state.movie.rating
+      owners_attributes: {
+        notes: this.state.movie.notes,
+        upc: this.state.movie.upc,
+        rating: this.state.movie.rating
+      }
     }
     const token = document.getElementsByName("csrf-token")[0].content
     console.log(movie)
 
-    fetch("/api/v1/movies/create", {
+    fetch("/api/v1/movies", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
