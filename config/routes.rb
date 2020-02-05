@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'movies/index'
-      post 'movies'
+      post 'movies', to: 'movies#create'
       get 'movies/:id', to: 'movies#show'
       put 'movies/:id', to: 'movies#update'
       delete 'movies/:id', to: 'movies#destroy'
