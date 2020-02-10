@@ -22,7 +22,7 @@ export default class Movies extends React.Component {
         }
         throw new Error("Network response was not ok.")
       })
-      .then(response => this.setState({ movies: response }))
+      .then(response => this.setState({ movies: response.movies }))
       .catch(() => this.props.history.push("/"))
   }
 

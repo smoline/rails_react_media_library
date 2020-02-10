@@ -48,6 +48,7 @@ export default class MovieEdit extends React.Component {
 
   handleDelete = () => {
     console.log(this.state.movie)
+    // this should only delete the owner record not the movie and cast
     // const token = document.getElementsByName("csrf-token")[0].content
     // fetch(`/api/v1/movies/${this.props.match.params.id}`, {
     //   method: "delete",

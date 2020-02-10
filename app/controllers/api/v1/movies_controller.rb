@@ -6,7 +6,7 @@ class Api::V1::MoviesController < ApplicationController
       owner = movie.owners.find_by(user_id: current_user.id).as_json
       movies_owners << movie.as_json.merge!(owner: owner)
     end
-    render json: movies_owners
+    render json: { movies: movies_owners }
   end
 
   def create
@@ -31,7 +31,7 @@ class Api::V1::MoviesController < ApplicationController
   end
 
   def update
-    # TODO: update the owner record (upc and notes) only
+    # TODO: update the owner record (upc, rating and notes) only
   end
 
   def destroy
