@@ -7,7 +7,7 @@ import Home from "../components/home"
 import Login from "../components/authorization/login"
 import Signup from "../components/authorization/signup"
 import Movies from "../components/movies-index/movies"
-import Movie from "../components/movies-show/movie"
+import Movie from "../components/movie-show/movie"
 import MovieNew from "../components/movie-new/movie-new"
 import MovieEdit from "../components/movie-edit/movie-edit"
 

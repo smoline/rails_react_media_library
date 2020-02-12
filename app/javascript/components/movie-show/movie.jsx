@@ -23,7 +23,7 @@ class Movie extends React.Component {
         }
         throw new Error("Network response was not ok.")
       })
-      .then(response => this.setState({ movie: response, owner: response.owner }))
+      .then(response => this.setState({ movie: response.movie, owner: response.movie.owner }))
       .catch(() => this.props.history.push("/"))
   }
 
