@@ -24,7 +24,7 @@ class Api::V1::MoviesController < ApplicationController
     owner = movie.owners.find_by(user_id: current_user.id)
     movie_owner = movie.as_json.merge!(owner: owner.as_json)
     if movie_owner
-      render json: movie_owner
+      render json: { movie: movie_owner }
     else
       render json: movie_owner.errors
     end
