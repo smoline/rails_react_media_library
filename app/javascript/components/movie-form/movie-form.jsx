@@ -9,6 +9,7 @@ export default class MovieForm extends React.Component {
   static propTypes = {
     onInputChange: PropTypes.func,
     movie: PropTypes.object,
+    owner: PropTypes.object,
     onSubmit: PropTypes.func,
     setRating: PropTypes.func
   }
@@ -19,6 +20,7 @@ export default class MovieForm extends React.Component {
   }
 
   render() {
+    console.log(this.props.owner)
     return (
       <Form inverted onSubmit={this.props.onSubmit} className="movie-form">
         <Form.Group>
@@ -35,14 +37,14 @@ export default class MovieForm extends React.Component {
             label="UPC"
             placeholder="UPC"
             name="upc"
-            value={this.props.movie.upc}
+            value={this.props.owner.upc || ""} 
             onChange={this.handleChange}
           />
           <Form.Field width={2}>
             <label>Rating</label>
             <StarRating
               numberOfStars="5"
-              currentRating={this.props.movie.rating}
+              currentRating={this.props.owner.rating || "0"}
               onClick={this.props.setRating}
             />
           </Form.Field>
@@ -107,7 +109,7 @@ export default class MovieForm extends React.Component {
             placeholder="Notes"
             rows={2}
             name="notes"
-            value={this.props.movie.notes}
+            value={this.props.owner.notes || ""}
             onChange={this.handleChange}
           />
         </Form.Field>

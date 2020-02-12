@@ -2,12 +2,14 @@ import React from "react"
 import { Link } from "react-router-dom"
 import { Container, Header, Divider, Button } from "semantic-ui-react"
 import MovieForm from "../movie-form/movie-form"
+import { omit } from "lodash"
 
 export default class MovieEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       movie: {
+        id: "",
         title: "",
         description: "",
         tagline: "",
@@ -17,7 +19,12 @@ export default class MovieEdit extends React.Component {
         release_date: "",
         runtime: ""
       },
-      owner: {}
+      owner: {
+        id: "",
+        upc: "",
+        notes: "",
+        rating: ""
+      }
     }
   }
 
@@ -30,19 +37,33 @@ export default class MovieEdit extends React.Component {
         }
         throw new Error("Network response was not ok.")
       })
-      .then(response => this.setState({ movie: response, owner: response.owner }))
+      .then(response => this.setState({
+        movie: omit(response.movie, ["owner"]),
+        owner: {
+          id: response.movie.owner.id,
+          upc: response.movie.owner.upc,
+          notes: response.movie.owner.notes,
+          rating: response.movie.owner.rating.toString()
+        }
+      }))
       .catch(() => this.props.history.push("/"))
   }
 
   handleChange = (name, value) => {
-    this.setState({
-      movie: { ...this.state.movie, [name]: value }
-    })
+    if (name === "rating" || "upc" || "notes") {
+      this.setState({
+        owner: { ...this.state.owner, [name]: value }
+      })
+    } else {
+      this.setState({
+        movie: { ...this.state.movie, [name]: value }
+      })
+    }
   }
 
   setRating = rating => {
     this.setState({
-      movie: { ...this.state.movie, rating: rating }
+      owner: { ...this.state.owner, rating: rating }
     })
   }
 
@@ -81,9 +102,12 @@ export default class MovieEdit extends React.Component {
       imdb_id: this.state.movie.imdb_id,
       release_date: this.state.movie.release_date,
       runtime: this.state.movie.runtime.toString(),
-      notes: this.state.movie.notes,
-      upc: this.state.movie.upc,
-      rating: this.state.movie.rating
+      owner_attributes: {
+        id: this.state.owner.id,
+        notes: this.state.owner.notes,
+        upc: this.state.owner.upc,
+        rating: this.state.owner.rating
+      }
     }
     const token = document.getElementsByName("csrf-token")[0].content
     console.log(movie)
@@ -100,7 +124,7 @@ export default class MovieEdit extends React.Component {
     }).then(response => {
       return response.json()
     }).then(data => {
-      if (data) {
+      if (data.movies) {
         this.redirect()
       } else {
         this.setState({
@@ -129,10 +153,12 @@ export default class MovieEdit extends React.Component {
 
   render() {
     const movie = this.state.movie
+    const owner = this.state.owner
 
     const movieForm = (
       <MovieForm
         movie={movie}
+        owner={owner}
         onSubmit={this.handleSubmit}
         onInputChange={this.handleChange}
         setRating={this.setRating}
@@ -153,7 +179,7 @@ export default class MovieEdit extends React.Component {
           </div>
         </div>
         <Divider className="custom-divider" />
-        {movieForm}
+        {owner.id ? movieForm : null}
       </Container>
     )
   }

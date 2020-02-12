@@ -17,7 +17,9 @@ export default class MovieNew extends React.Component {
         tmdb_id: "",
         imdb_id: "",
         release_date: "",
-        runtime: "",
+        runtime: ""
+      },
+      owner: {
         notes: "",
         upc: "",
         rating: ""
@@ -30,14 +32,20 @@ export default class MovieNew extends React.Component {
   }
 
   handleChange = (name, value) => {
-    this.setState({
-      movie: { ...this.state.movie, [name]: value}
-    })
+    if (name === "rating" || "upc" || "notes") {
+      this.setState({
+        owner: { ...this.state.owner, [name]: value }
+      })
+    } else {
+      this.setState({
+        movie: { ...this.state.movie, [name]: value}
+      })
+    }
   }
 
   setRating = rating => {
     this.setState({ 
-      movie: { ...this.state.movie, rating: rating }
+      owner: { ...this.state.owner, rating: rating }
     })
   }
 
@@ -45,7 +53,7 @@ export default class MovieNew extends React.Component {
     this.setState({ value })
   }
 
-  handleTitleSearch = (event) => {
+  handleTitleSearch = () => {
     let title = { title: this.state.value }
     const token = document.getElementsByName("csrf-token")[0].content
 
@@ -157,9 +165,9 @@ export default class MovieNew extends React.Component {
       release_date: this.state.movie.release_date,
       runtime: this.state.movie.runtime.toString(),
       owners_attributes: {
-        notes: this.state.movie.notes,
-        upc: this.state.movie.upc,
-        rating: this.state.movie.rating
+        notes: this.state.owner.notes,
+        upc: this.state.owner.upc,
+        rating: this.state.owner.rating
       }
     }
     const token = document.getElementsByName("csrf-token")[0].content
@@ -206,6 +214,7 @@ export default class MovieNew extends React.Component {
 
   render() {
     const movie = this.state.movie
+    const owner = this.state.owner
     const { value, results, modalOpen, isSearching } = this.state
    
     const searchForm = (
@@ -238,6 +247,7 @@ export default class MovieNew extends React.Component {
     const movieForm = (
       <MovieForm
         movie={movie}
+        owner={owner}
         onSubmit={this.handleSubmit}
         onInputChange={this.handleChange}
         setRating={this.setRating}
