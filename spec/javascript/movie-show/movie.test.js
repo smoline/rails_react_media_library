@@ -10,7 +10,7 @@ const match = {
   params: { id: 25 }
 }
 
-describe('Movies', () => {
+describe('Movie Show', () => {
   describe('componentDidMount', () => {
     it('sets the state componentDidMount', async () => {
 
@@ -56,14 +56,15 @@ describe('Movies', () => {
           history={history}
           match={match}
           movie={{}}
+          owner={{}}
         />
       )
 
       expect(component.exists()).toBe(true)
       expect(component.state('movie')).toBeTruthy()
       setImmediate(() => {
-        console.log(component.state())
         expect(component.state().movie.id).toEqual(25)
+        expect(component.state().owner.id).toEqual(25)
       })
     })
   })
