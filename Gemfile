@@ -34,8 +34,12 @@ gem 'httparty', '~> 0.13.7'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec', '~> 3.9.0'
+  gem 'rspec-rails', '~> 3.9'
+  gem 'capybara', '~> 3.31'
+  gem 'database_cleaner', '~> 1.8', '>= 1.8.2'
 end
+
+gem 'simplecov', require: false, group: :test
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
