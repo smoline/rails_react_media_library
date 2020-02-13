@@ -50,7 +50,7 @@ export default class MovieEdit extends React.Component {
   }
 
   handleChange = (name, value) => {
-    if (name === "rating" || "upc" || "notes") {
+    if (name === "upc" || "notes") {
       this.setState({
         owner: { ...this.state.owner, [name]: value }
       })

@@ -20,7 +20,6 @@ export default class MovieForm extends React.Component {
   }
 
   render() {
-    console.log(this.props.owner)
     return (
       <Form inverted onSubmit={this.props.onSubmit} className="movie-form">
         <Form.Group>

@@ -59,7 +59,6 @@ describe('Movies', () => {
       expect(component.exists()).toBe(true)
       expect(component.state('movies')).toBeTruthy()
       setImmediate(() => {
-        console.log(component.state())
         expect(component.state().movies[0].id).toEqual(25)
       })
     })
