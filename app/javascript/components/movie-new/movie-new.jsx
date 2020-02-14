@@ -69,11 +69,11 @@ export default class MovieNew extends React.Component {
     }).then(response => {
       return response.json()
     }).then(data => {
-      if (data[0]) {
-        var sortedResults = reverse(sortBy(data, ["release_date"]))
+      if (data.results) {
+        var sortedResults = reverse(sortBy(data.results, ["release_date"]))
         this.setState({ results: sortedResults, modalOpen: !this.state.modalOpen })
-      } else if(data.tmdb_id) {
-        this.setState({ results: data})
+      } else if (data.tmdb_id) {
+        this.setState({ results: data })
         this.moreMovieInfo(data.tmdb_id.toString())
       } else {
         console.log(data.id)

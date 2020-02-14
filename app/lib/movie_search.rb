@@ -12,7 +12,7 @@ class MovieSearch
       include_adult: false
     })
 
-    movie_info = JSON.parse(response.body)["results"]
+    movie_info = JSON.parse(response.body)
     return movie_info
   end
 
