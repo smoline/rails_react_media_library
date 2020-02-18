@@ -48,7 +48,7 @@ RSpec.describe Owner, type: :model do
   end
 
   describe "Associations" do
-    it "has one user" do
+    it "belongs to user" do
       assc = Owner.reflect_on_association(:user)
       expect(assc.macro).to eq :belongs_to
     end
